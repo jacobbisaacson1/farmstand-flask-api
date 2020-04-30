@@ -1,5 +1,6 @@
 from peewee import *
 import datetime
+from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('foods.sqlite')
 
@@ -13,10 +14,18 @@ class Food(Model):
 	class Meta:
 		database = DATABASE
 
+
+class Farmer(UserMixin, Model):
+  name=CharField()
+  username=CharField(unique=True)
+  password=CharField()
+
+  class Meta:
+    database = DATABASE
+
 def initialize():
 	DATABASE.connect()
-	DATABASE.create_tables([Food], safe=True)
+	DATABASE.create_tables([Farmer, Food], safe=True)
 	print("Connected to DB. Created TABLES (if not already there)")
 	DATABASE.close()
 
-  
