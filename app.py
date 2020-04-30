@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import models
 
 DEBUG=True
 PORT=8000
@@ -32,4 +33,5 @@ def get_json2():
   )
 
 if __name__ == '__main__':
-	app.run(debug=DEBUG, port=PORT)
+  models.initialize()
+  app.run(debug=DEBUG, port=PORT)
