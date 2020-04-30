@@ -23,6 +23,16 @@ def load_farmer(farmer_id):
   except models.DoesNotExist:
     return None
 
+@login_manager.unauthorized_handler
+def unauthorized():
+  return jsonify(
+    data={
+      'error': 'Farmer NOT logged in'
+    },
+    message="You must be logged in to access that resource",
+    status=401
+  ), 401
+
 CORS(foods, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(farmers, origins=['http://localhost:3000'], supports_credentials=True)
 
