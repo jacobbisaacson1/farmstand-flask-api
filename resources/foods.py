@@ -1,6 +1,7 @@
 import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
+from flask_login import current_user
 
 foods = Blueprint('foods', 'foods')
 
@@ -11,6 +12,8 @@ def foods_index():
   result = models.Food.select()
   print(result)
   food_dicts = [model_to_dict(food) for food in result]
+  for food_dict in food_dicts:
+    food_dict['farmer'].pop('password')
   print(food_dicts)
   return jsonify({
     'data': food_dicts,
@@ -23,14 +26,14 @@ def foods_index():
 @foods.route('/', methods=['POST'])
 def create_food():
   payload = request.get_json()
-  print(payload)
   new_food = models.Food.create(
     name=payload['name'],
     price=payload['price'],
-    farmer=payload['farmer']
+    farmer=current_user.id
   )
-  print(new_food.__dict__)
   food_dict = model_to_dict(new_food)
+  print(food_dict)
+  food_dict['farmer'].pop('password')
   return jsonify(
     data=food_dict,
     message="successfully CREATED food!",
