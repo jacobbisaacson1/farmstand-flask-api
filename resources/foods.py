@@ -9,15 +9,15 @@ foods = Blueprint('foods', 'foods')
 # SHOW / INDEX
 @foods.route('/', methods=['GET'])
 def foods_index():
-  result = models.Food.select()
-  print(result)
-  food_dicts = [model_to_dict(food) for food in result]
-  for food_dict in food_dicts:
+  # result = models.Food.select()
+  # print(result)
+  current_user_food_dicts = [model_to_dict(food) for food in current_user.foods]
+  for food_dict in current_user_food_dicts:
     food_dict['farmer'].pop('password')
-  print(food_dicts)
+  print(current_user_food_dicts)
   return jsonify({
-    'data': food_dicts,
-    'message': f"successfully FOUND {len(food_dicts)} foods",
+    'data': current_user_food_dicts,
+    'message': f"successfully FOUND {len(current_user_food_dicts)} foods",
     'status': 200
   }), 200
 
