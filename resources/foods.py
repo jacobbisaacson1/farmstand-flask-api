@@ -94,7 +94,7 @@ def update_food(id):
     if 'name' in payload:
       food_to_update.name = payload['name']
     if 'price' in payload:
-      food_to_update = payload['price']
+      food_to_update.price = payload['price']
     food_to_update.save()
     updated_food_dict = model_to_dict(food_to_update)
     updated_food_dict['farmer'].pop('password')
@@ -110,7 +110,7 @@ def update_food(id):
         data={
           'error': '403 Forbidden'
         },
-        message="Food farmer's id does not match food id. User can only update their own foods",
+        message="Food's Farmer's ID does not match food's id. User can only update their own foods",
         status=403
       ), 403 
 
