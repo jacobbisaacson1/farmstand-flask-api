@@ -2,14 +2,13 @@ import models
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 
 farmers = Blueprint('farmers', 'farmers')
 
 @farmers.route('/', methods=['GET'])
 def test_farmer_resource():
 	return "farmer resource set up!"
-
 
 @farmers.route('/register', methods=['POST'])
 def register():
@@ -55,11 +54,11 @@ def login():
     farmer = models.Farmer.get(models.Farmer.username == payload['username'])
     farmer_dict = model_to_dict(farmer)
     password_is_good = check_password_hash(farmer_dict['password'], payload['password'])
-    # if pw is good
+
     if(password_is_good):
-      # LOG THE USER IN!!!!! using Flask-Login!
-      login_user(farmer) # in express we did this manually by setting stuff in session
-      # respond -- all good -- remove the pw first
+      # print(f"{current_user.username} is current_user.username in POST login")
+      print(model_to_dict(farmer))
+      login_user(farmer)
       farmer_dict.pop('password')
       return jsonify(
         data=farmer_dict,
@@ -98,14 +97,21 @@ def farmer_index():
 # test route no.2 to access current farmer
 @farmers.route('/logged_in_farmer', methods=['GET'])
 def get_logged_in_farmer():
-  print(current_user)
+  print(f"{current_user.username} is current_user.username in GET logged_in_user")
   farmer_dict = model_to_dict(current_user)
   farmer_dict.pop('password')
   return jsonify(
     data=farmer_dict
   ), 200
 
-
+@farmers.route('/logout', methods=['GET'])
+def logout():
+  logout_user()
+  return jsonify(
+    data={},
+    message="successfully LOGGED OUT",
+    status=200
+  ), 200
 
 
 

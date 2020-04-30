@@ -17,7 +17,9 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_farmer(farmer_id):
   try:
-    return models.Farmer.get(farmer_id)
+    print('loading the following farmer: ')
+    farmer = models.Farmer.get_by_id(farmer_id)
+    return farmer
   except models.DoesNotExist:
     return None
 
