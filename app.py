@@ -1,16 +1,24 @@
 from flask import Flask, jsonify
 from resources.foods import foods
+from resources.farmers import farmers
 import models
 from flask_cors import CORS
+from flask_login import LoginManager
 
 DEBUG=True
 PORT=8000
 
 app = Flask(__name__)
 
+app.secret_key = "super secret pizza party."
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 CORS(foods, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(farmers, origins=['http://localhost:3000'], supports_credentials=True)
 
 app.register_blueprint(foods, url_prefix='/api/v1/foods')
+app.register_blueprint(farmers, url_prefix='/api/v1/farmers')
 
 @app.route('/')
 def test_route():
