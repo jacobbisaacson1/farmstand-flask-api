@@ -1,6 +1,7 @@
 import models
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash
+from playhouse.shortcuts import model_to_dict
 
 farmers = Blueprint('farmers', 'farmers')
 
@@ -17,6 +18,11 @@ def register():
   print(payload)
   try:
     models.Farmer.get(models.Farmer.username == payload['username'])
+    return jsonify(
+      data={},
+      message="Farmer's USERNAME already exists",
+      status=401
+    ), 401
   except models.DoesNotExist:
     pw_hash = generate_password_hash(payload['password'])
     created_farmer = models.Farmer.create(
@@ -25,8 +31,15 @@ def register():
       password=pw_hash
     )
     print(created_farmer)
+    created_farmer_dict = model_to_dict(created_farmer)
+    print(created_farmer_dict)
+    created_farmer_dict.pop('password')
 
-  return "check terminal for register json stuff"
+  return jsonify(
+    data=created_farmer_dict,
+    message="Sucessfully REGISTERED farmer",
+    status=201
+  ), 201
 
 
 
