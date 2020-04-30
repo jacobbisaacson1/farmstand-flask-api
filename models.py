@@ -4,17 +4,6 @@ from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('foods.sqlite')
 
-class Food(Model):
-	name = CharField()
-	price = IntegerField()
-	farmer = CharField() 
-  # need to make foreinKeyField() -- farmer
-	created_at: DateTimeField(default=datetime.datetime.now)
-
-	class Meta:
-		database = DATABASE
-
-
 class Farmer(UserMixin, Model):
   name=CharField()
   username=CharField(unique=True)
@@ -22,6 +11,19 @@ class Farmer(UserMixin, Model):
 
   class Meta:
     database = DATABASE
+
+
+class Food(Model):
+	name = CharField()
+	price = IntegerField()
+	farmer = ForeignKeyField(Farmer, backref='foods')
+  # need to make foreinKeyField() -- farmer
+	created_at: DateTimeField(default=datetime.datetime.now)
+
+	class Meta:
+		database = DATABASE
+
+
 
 def initialize():
 	DATABASE.connect()
