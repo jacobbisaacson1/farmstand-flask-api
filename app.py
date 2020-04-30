@@ -17,7 +17,19 @@ def get_json():
     status=200
   ), 200
 
-
+@app.route('/test2_json')
+def get_json2():
+  jacob = {
+    'name': 'Jacob',
+    'what?': "this is a test on nested json data",
+    'number': 30,
+    'cute': True
+  }
+  return jsonify(
+    name="Erin",
+    what="wife",
+    husband=jacob
+  )
 
 if __name__ == '__main__':
 	app.run(debug=DEBUG, port=PORT)
