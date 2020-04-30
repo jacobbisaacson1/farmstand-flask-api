@@ -2,7 +2,7 @@ import models
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 farmers = Blueprint('farmers', 'farmers')
 
@@ -80,6 +80,42 @@ def login():
       message="Username or password is incorrect",
       status=401
     ), 401
+
+
+# test route for creating a food connected to farmer
+@farmers.route('/all', methods=['GET'])
+def farmer_index():
+  farmers = models.Farmer.select()
+  farmer_dicts = [ model_to_dict(farmer) for farmer in farmers ]
+
+  for farmer_dict in farmer_dicts:
+    farmer_dict.pop('password')
+  print(farmer_dicts)
+  return jsonify(
+    farmer_dicts
+  ), 200
+
+# test route no.2 to access current farmer
+@farmers.route('/logged_in_farmer', methods=['GET'])
+def get_logged_in_farmer():
+  print(current_user)
+  farmer_dict = model_to_dict(current_user)
+  farmer_dict.pop('password')
+  return jsonify(
+    data=farmer_dict
+  ), 200
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

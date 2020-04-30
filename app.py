@@ -14,6 +14,13 @@ app.secret_key = "super secret pizza party."
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+@login_manager.user_loader
+def load_farmer(farmer_id):
+  try:
+    return models.Farmer.get(farmer_id)
+  except models.DoesNotExist:
+    return None
+
 CORS(foods, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(farmers, origins=['http://localhost:3000'], supports_credentials=True)
 

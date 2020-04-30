@@ -24,7 +24,6 @@ class Food(Model):
 		database = DATABASE
 
 
-
 def initialize():
 	DATABASE.connect()
 	DATABASE.create_tables([Farmer, Food], safe=True)
