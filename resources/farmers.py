@@ -97,12 +97,22 @@ def farmer_index():
 # test route no.2 to access current farmer
 @farmers.route('/logged_in_farmer', methods=['GET'])
 def get_logged_in_farmer():
-  print(f"{current_user.username} is current_user.username in GET logged_in_user")
-  farmer_dict = model_to_dict(current_user)
-  farmer_dict.pop('password')
-  return jsonify(
-    data=farmer_dict
-  ), 200
+  if not current_user.is_authenticated:
+    return jsonify(
+      data={},
+      message="No farmer is currently logged in",
+      status=401,
+    ), 401
+
+  else:
+    farmer_dict = model_to_dict(current_user)
+    farmer_dict.pop('password')
+
+    return jsonify(
+      data=farmer_dict,
+      message=f"Currently logged in as {farmer_dict['username']}.",
+      status=200
+    ), 200
 
 @farmers.route('/logout', methods=['GET'])
 def logout():
