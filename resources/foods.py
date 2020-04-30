@@ -5,10 +5,18 @@ from playhouse.shortcuts import model_to_dict
 foods = Blueprint('foods', 'foods')
 
 # GET /api/v1/foods
-# SHOW / INDESX
+# SHOW / INDEX
 @foods.route('/', methods=['GET'])
 def foods_index():
-	return "foods resource working"
+  result = models.Food.select()
+  print(result)
+  food_dicts = [model_to_dict(food) for food in result]
+  print(food_dicts)
+  return jsonify({
+    'data': food_dicts,
+    'message': f"successfully FOUND {len(food_dicts)} foods",
+    'status': 200
+  }), 200
 
 # POST /api/v1/foods/ (dont forget the slash)
 # CREATE
