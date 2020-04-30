@@ -36,3 +36,21 @@ def create_food():
     message="successfully CREATED food!",
     status=201
   ), 201
+
+
+# DELETE /api/v1/foods/id
+@foods.route('/<id>', methods=['DELETE'])
+def delete_food(id):
+  delete_query = models.Food.delete().where(models.Food.id == id)
+  num_of_rows_deleted = delete_query.execute()
+  print(num_of_rows_deleted)
+  return jsonify(
+    data={},
+    message="successfully DELETED {} food with id {}".format(num_of_rows_deleted, id),
+    status=200
+  ), 200
+
+
+
+
+  
