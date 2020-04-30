@@ -1,5 +1,6 @@
 import models
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
+from playhouse.shortcuts import model_to_dict
 
 foods = Blueprint('foods', 'foods')
 
@@ -20,4 +21,10 @@ def create_food():
     price=payload['price'],
     farmer=payload['farmer']
   )
-  return "check terminal -- should be actually creating food"
+  print(new_food.__dict__)
+  food_dict = model_to_dict(new_food)
+  return jsonify(
+    data=food_dict,
+    message="successfully CREATED food!",
+    status=201
+  ), 201
