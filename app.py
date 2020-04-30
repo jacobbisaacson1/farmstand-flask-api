@@ -1,10 +1,13 @@
 from flask import Flask, jsonify
+from resources.foods import foods
 import models
 
 DEBUG=True
 PORT=8000
 
 app = Flask(__name__)
+
+app.register_blueprint(foods, url_prefix='/api/v1/foods')
 
 @app.route('/')
 def test_route():

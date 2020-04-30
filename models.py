@@ -18,3 +18,5 @@ def initialize():
 	DATABASE.create_tables([Food], safe=True)
 	print("Connected to DB. Created TABLES (if not already there)")
 	DATABASE.close()
+
+  
