@@ -18,7 +18,7 @@ class Food(Model):
 	price = IntegerField()
 	farmer = ForeignKeyField(Farmer, backref='foods')
   # need to make foreinKeyField() -- farmer
-	created_at: DateTimeField(default=datetime.datetime.now)
+	created_at = DateTimeField(default=datetime.datetime.now)
 
 	class Meta:
 		database = DATABASE

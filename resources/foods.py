@@ -115,6 +115,34 @@ def update_food(id):
       ), 403 
 
 
+# SHOW ROUTE -- GET /api/v1/foods/id
+@foods.route('/<id>', methods=['GET'])
+def show_food(id):
+  food = models.Food.get_by_id(id)
+  if not current_user.is_authenticated:
+    return jsonify(
+      data={
+        'name': food.name,
+        'price': food.price
+      },
+      message="Registered Farmers can see more info about this food",
+      status=200
+    ), 200
+
+  else:
+    food_dict = model_to_dict(food)
+    food_dict['farmer'].pop('password')
+
+    if food.farmer.id != current_user.id:
+      food_dict.pop('created_at')
+
+    return jsonify(
+      data=food_dict,
+      message=f"Found food with id {id}",
+      status=200
+    ), 200
+
+
 
 
 
