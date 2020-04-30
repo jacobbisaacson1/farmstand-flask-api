@@ -46,11 +46,47 @@ def delete_food(id):
   print(num_of_rows_deleted)
   return jsonify(
     data={},
-    message="successfully DELETED {} food with id {}".format(num_of_rows_deleted, id),
+    message=f"successfully DELETED {food.name} food with id {id}",
     status=200
   ), 200
 
 
+# UPDATE /api/v1/foods/id
+@foods.route('/<id>', methods=['PUT'])
+def update_food(id):
+  payload = request.get_json()
+
+  update_query = models.Food.update(
+    name=payload['name'],
+    price=payload['price'],
+    farmer=payload['farmer']
+  ).where(models.Food.id == id)
+
+  num_of_rows_modified = update_query.execute()
+
+  updated_food = models.Food.get_by_id(id) 
+  updated_food_dict = model_to_dict(updated_food)
+
+  return jsonify(
+      data=updated_food_dict,
+      message=f"Successfully updated food with id {id}",
+      status=200
+    ), 200
 
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
