@@ -12,7 +12,7 @@ class Farmer(UserMixin, Model):
   class Meta:
     database = DATABASE
 
-
+    
 class Food(Model):
 	name = CharField()
 	price = IntegerField()
