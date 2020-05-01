@@ -42,7 +42,7 @@ def create_food():
     status=201
   ), 201
 
-
+# change food.name to food_to_delete.name
 # DELETE /api/v1/foods/id
 @foods.route('/<id>', methods=['DELETE'])
 @login_required
@@ -54,7 +54,7 @@ def delete_food(id):
 
       return jsonify(
         data={},
-        message=f"successfully DELETED {food.name} food with ID {id}",
+        message=f"successfully DELETED {food_to_delete.name} food with ID {id}",
         status=200
       ), 200
 
