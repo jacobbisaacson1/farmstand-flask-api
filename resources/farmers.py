@@ -8,7 +8,17 @@ farmers = Blueprint('farmers', 'farmers')
 
 @farmers.route('/', methods=['GET'])
 def test_farmer_resource():
-	return "farmer resource set up!"
+  return "farmer resource set up!"
+
+# @farmers.route('/', methods=['GET'])
+# def farmers_index():
+#   farmer_dicts = model_to_dict(farmers)
+#   print(farmer_dicts)
+#   return jsonify({
+#     'data': farmer_dicts,
+#     'message': f"successfully FOUND {len(farmer_dicts)} farmers",
+#     'status': 201
+#   }), 201
 
 @farmers.route('/register', methods=['POST'])
 def register():
