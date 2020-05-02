@@ -90,7 +90,7 @@ def login():
       status=401
     ), 401
 
-
+# ALL FARMERS INDEX -- connect to show page
 # test route for creating a food connected to farmer
 @farmers.route('/all', methods=['GET'])
 def farmer_index():
