@@ -9,16 +9,18 @@ foods = Blueprint('foods', 'foods')
 # SHOW / INDEX
 # NOTE !!! DO I WANT TO require login FOR THIS?!  WANT ROUTE TO 
 # SHOW ALL THE FARMERS!  -- all the foods will be on their cards
+
 @foods.route('/', methods=['GET'])
 @login_required
 def foods_index():
-  current_user_food_dicts = [model_to_dict(food) for food in current_user.foods]
-  for food_dict in current_user_food_dicts:
+  foods = models.Food.select()
+  food_dicts = [model_to_dict(food) for food in foods]
+  for food_dict in food_dicts:
     food_dict['farmer'].pop('password')
-  print(current_user_food_dicts)
+    print(food_dicts)
   return jsonify({
-    'data': current_user_food_dicts,
-    'message': f"successfully FOUND {len(current_user_food_dicts)} foods",
+    'data': food_dicts,
+    'message': f"successfully FOUND {len(food_dicts)} foods",
     'status': 200
   }), 200
 
