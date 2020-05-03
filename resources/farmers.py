@@ -92,6 +92,10 @@ def login():
 
 # ALL FARMERS INDEX -- connect to show page
 # test route for creating a food connected to farmer
+
+#  see the /all -- get cors error if gone, but its the right url;
+
+
 @farmers.route('/all', methods=['GET'])
 def farmer_index():
   farmers = models.Farmer.select()
@@ -100,9 +104,26 @@ def farmer_index():
   for farmer_dict in farmer_dicts:
     farmer_dict.pop('password')
   print(farmer_dicts)
-  return jsonify(
-    farmer_dicts
-  ), 200
+  return jsonify({
+    'data': farmer_dicts,
+    'message': f"successfully FOUND {len(farmer_dicts)} FARMERS",
+    'status': 200
+  }), 200
+
+
+# @farmers.route('/all', methods=['GET'])
+# def farmer_index():
+#   current_user_farmer_dicts = [model_to_dict(farmer) for farmer in current_user.farmers]
+#   for farmer_dict in current_user_farmer_dicts:
+#     print(current_user_farmer_dicts)
+#   return jsonify({
+#     'data': current_user_farmer_dicts,
+#     'message': f"successfully FOUND {len(current_user_farmer_dicts)} FARMERS",
+#     'status': 200
+#   }), 200
+
+
+
 
 # test route no.2 to access current farmer
 @farmers.route('/logged_in_farmer', methods=['GET'])
